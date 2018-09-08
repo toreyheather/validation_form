@@ -23,7 +23,8 @@ function isValidPassword(password) {
 
 // The telephone number must be in the format of (555) 555-5555
 function isValidTelephone(telephone) {
-    return/^\(\d{3}\)\s\d{3}-\d{4}$/.test(telephone);
+   // return/^\(\d{3}\)\s\d{3}-\d{4}$/.test(telephone);
+   return/^\D*\d{3}\D*\d{3}\D*\d{4}\D*$/.test(telephone);
 }
 
 // Must be a valid email address
@@ -37,7 +38,10 @@ function isValidEmail(email) {
  * 
  */
 
-function formatTelephone(text) {}
+function formatTelephone(text) {
+    const regex = /^\D*(\d{3})\D*(\d{3})\D*(\d{4})\D*$/;
+    return text.replace(regex, '($1) $2-$3');
+}
 
 /**
  * 
@@ -69,5 +73,9 @@ usernameInput.addEventListener("input", createListener(isValidUsername));
 passwordInput.addEventListener("input", createListener(isValidPassword));
 
 telephoneInput.addEventListener("input", createListener(isValidTelephone));
+
+telephoneInput.addEventListener("blur", e => {
+    e.target.value = formatTelephone (e.target.value);
+});
 
 emailInput.addEventListener("input", createListener(isValidEmail));
